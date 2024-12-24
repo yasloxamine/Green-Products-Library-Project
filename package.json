@@ -1,0 +1,31 @@
+{
+  "name": "ecofriendlylibrary",
+  "version": "1.0.0",
+  "description": "Online community driven eco friendly useful products library.",
+  "keywords": [
+    "nodejs",
+    "express",
+    "ejs",
+    "css",
+    "javascript",
+    "eco-friendly",
+    "sustainable",
+    "green-products",
+    "product-library",
+    "environmentally-friendly",
+    "e-commerce"
+  ],
+  "license": "ISC",
+  "author": "Mohamed Amine Yaslo",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}

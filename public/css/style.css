@@ -1,0 +1,111 @@
+body{
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+h1{
+    font-size: 3rem;
+    margin: 0px 5%;
+}
+
+span{
+    color: #859F3D;
+}
+
+/****************************FONTS********************************/
+
+/*********************SERIF*********************/
+.cormorant-sc-light {
+    font-family: "Cormorant SC", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .cormorant-sc-regular {
+    font-family: "Cormorant SC", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  /*********************SAN SERIF*********************/
+
+  .encode-sans {
+    font-family: "Encode Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+  }
+
+/*************************************************************/
+  
+
+.black-bg-flexbox{
+    display: flex;
+    background-color: #1A1A19;
+    color: white;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.black-text-color{
+    color: black;
+}
+
+.padding-20{
+    padding: 20px;
+}
+
+.logo{
+    width: 100px;
+    height: 100px;
+}
+
+.black-custom-hr{
+color: black;
+margin: 0;
+}
+
+.white-custom-hr{
+border: none;
+margin: 0;
+background-color: grey;
+height: 0.5px;
+}
+
+.center-align{
+    text-align: center;
+}
+
+#navigationBar-section>.black-bg-flexbox{
+flex-wrap: wrap;
+gap: 10px 2rem;
+justify-content: space-between;
+}
+
+#hero-section{
+    margin: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-submit-btn-div {
+    background-color: #859F3D;
+    margin: 0 0.2rem;
+    padding: 20px;
+    width: 300px;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
+  }
+  
+  .custom-submit-btn-div:hover {
+    background-color: black; /* Target color on hover */
+  }
+
+

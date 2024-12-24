@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%# website icon logo link %>
+    <link rel="icon" href="/images/mainlogo.png" />
+
+    <title>ecofriendlylibrary</title>
+
+    <%# google fonts links %>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Encode+Sans:wght@100..900&display=swap" rel="stylesheet">
+
+   <%# css link %>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+    <%# including the header section from the header.ejs in partials folder%>
+    <%- include('partials/header.ejs') %>
+    <%# including the navigation section from the navigationBar.ejs in partials folder%>
+    <%- include('partials/navigationBar.ejs') %>
+
+     <%# including the hero section from the hero.ejs in partials folder%>
+     <%- include('partials/hero.ejs') %>
+    
+    
+</body>
+</html>
