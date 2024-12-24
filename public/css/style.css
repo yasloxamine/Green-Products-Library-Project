@@ -88,7 +88,7 @@ justify-content: space-between;
 }
 
 #hero-section{
-    margin: 40px 0px;
+    margin: 40px 0px 80px;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -106,6 +106,21 @@ justify-content: space-between;
   
   .custom-submit-btn-div:hover {
     background-color: black; /* Target color on hover */
+  }
+
+  #products-grid-container{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 20px;
+  }
+
+  .products-grid-item{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .products-grid-item>div>img{
+    width: 100%;
   }
 
 

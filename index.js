@@ -32,8 +32,17 @@ const port = 3000;
 app.use(express.static("public"));
 
 //getting the home route
-app.get("/",(req,res)=>{
-    res.render("index.ejs");
+app.get("/",async(req,res)=>{
+
+
+    const queryResult = await GetAllProductsFromDatabase();
+
+    const products = queryResult.rows[0];
+
+    console.log(products);
+    console.log(typeof(products));
+
+    res.render("index.ejs",{products:products});
 });
 
 //listening to the declared server port
@@ -45,5 +54,12 @@ app.listen(port,()=>{
 
 /*---------------------------FUNCTIONS-----------------------------*/
 
-
+//get all the products from the pg database
+async function GetAllProductsFromDatabase(){
+    try {
+        return await client.query("SELECT * FROM products ORDER BY id DESC");
+    } catch (error) {
+        console.log("Can't query product selection from database : |"+error);
+    }
+}
 
