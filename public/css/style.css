@@ -2,7 +2,7 @@ body{
     margin: 0;
 }
 
-a{
+a,.custom-submit-btn{
     text-decoration: none;
     color: white;
 }
@@ -102,6 +102,7 @@ justify-content: space-between;
     padding: 20px;
     width: 300px;
     transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
+    cursor: pointer;
   }
   
   .custom-submit-btn-div:hover {
@@ -110,8 +111,9 @@ justify-content: space-between;
 
   #products-grid-container{
     display: grid;
-    grid-template-columns: repeat(5,1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3,1fr);
+    gap: 40px 2rem;
+    margin: 0 7%;
   }
 
   .products-grid-item{
@@ -122,5 +124,65 @@ justify-content: space-between;
   .products-grid-item>div>img{
     width: 100%;
   }
+
+ .custom-form-submission{
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 400px;
+ }
+
+ .custom-form-submission-container{
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+ }
+
+ .custom-form-submission>input{
+  border-radius: 0px;
+  border: 0.5px solid;
+  height: 70px;
+ }
+
+ .custom-form-submission>textarea{
+  resize: none;
+  overflow: hidden;
+  height: 150px;
+ }
+
+ #login-form-container{
+  display: flex;
+  position: fixed;
+  bottom: 200px;
+  width: 100%;
+  height: 50vh;
+  justify-content: center;
+ }
+
+ #login-form{
+  display: flex;
+  flex-direction: column;
+  background-color: #859F3D;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 300px;
+  row-gap: 10px;
+  padding: 0 10px;
+ }
+
+
+ #login-form>input{
+  border: none;
+  width: 100%;
+  height: 25%;
+ }
+
+ #login-form>svg{
+height: 20px;
+  width: auto;
+  align-self: flex-end;
+  cursor: pointer;
+ }
 
 

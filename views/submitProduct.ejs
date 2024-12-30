@@ -7,8 +7,6 @@
     <%# website icon logo link %>
     <link rel="icon" href="/images/mainlogo.png" />
 
-
-
     <title>ecofriendlylibrary</title>
 
     <%# google fonts links %>
@@ -19,27 +17,15 @@
    <%# css link %>
     <link rel="stylesheet" href="css/style.css">
 
-    <%# jquery link %>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 </head>
 <body>
 
     <%# including the header section from the header.ejs in partials folder%>
     <%- include('partials/header.ejs') %>
-    <%# including the navigation section from the navigationBar.ejs in partials folder%>
-    <%- include('partials/navigationBar.ejs') %>
 
-     <%# including the hero section from the hero.ejs in partials folder%>
-     <%- include('partials/hero.ejs') %>
+    <h1>Welcome <%= userLogin %> id : <%= userId %></h1>
 
-     <%- include('partials/loginForm.ejs') %>
-
-     <%# including the products section from the products.ejs in partials folder%>
-     <%- include('partials/products.ejs') %>
+    <%- include('partials/productSubmissionForm.ejs') %>
     
-   <script src="js/main.js"></script> 
-     
 </body>
-
 </html>
