@@ -74,12 +74,21 @@ else {
     
 });
 
-
-app.post("/submitProduct",(req,res)=>{
+//submit new product using submitProduct post route 
+app.post("/submitProduct",async(req,res)=>{
 
     const name = req.body.name;
     const link = req.body.link;
     const description = req.body.description;
+    const imageUrl = req.body.imageUrl;
+
+    //insert new product into table
+if(await InsertNewProductIntoDb(name,description,link,imageUrl,req.body.userId)){
+    console.log("product inserted successfully!");
+    res.redirect("/");
+}else{
+    console.log("Error inserting product");
+}
     
 });
 
@@ -110,16 +119,17 @@ try {
 }
 
 //insert a new product into the database using an async function
-async function InsertNewProductIntoDb(){
+async function InsertNewProductIntoDb(name,description,link,imageUrl,userId){
 
     try {
-        return await client.query("INSERT INTO ");
+        return await client.query("INSERT INTO products (name,description,link,image_url,user_id) VALUES ($1,$2,$3,$4,$5)",[name,description,link,imageUrl,userId]);
     } catch (error) {
         console.log("Insert Query Failed : | "+error);
     }
 
 }
 
+//get specific user from db using an async function
 async function GetSpecificUserFromDb(userId){
 
     try {
