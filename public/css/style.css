@@ -186,11 +186,16 @@ height: 20px;
  }
 
 .profil-user-products-card{
-  background-color: orange;
+
  }
 
  #profil-user-products-card-container{
   row-gap: 40px;
   width: 50%;
+ }
+
+ .bold-custom-hr{
+width: 90%;
+   border: solid 3px black;
  }
 
