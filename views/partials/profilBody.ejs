@@ -1,16 +1,26 @@
 
 <div class="row-flex">
 
- <div>
+    
+    <div id="profil-user-products-card-container">
 
-    test 
-    test
+   
 
+   <% userProducts.forEach(product=>{ %> 
+
+      <div class="profil-user-products-card">  
+    <p>product id : <%= product.id %></p>
+    <p>product name : <%= product.name %></p>
+    <p>product description : <%= product.description %></p>
+    <p>product link : <%= product.link %></p>
+    <p>product image url : <%= product.image_url %></p>
+    </div> 
+ <% }); %> 
 
 </div>
 
 <%# product submission form %>
-<div>
+
 <form action="/submitProduct" method="post" class="custom-form-submission">
     <input type="text" name="userId" value="<%= userId %>" hidden="true">
     <input type="text" placeholder="name" name="name">
@@ -21,7 +31,7 @@
     <input type="submit" value="Submit">
 
 </form>
-</div>  
+ 
 
 </div>
 

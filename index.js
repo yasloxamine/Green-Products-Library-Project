@@ -61,10 +61,16 @@ const loginData = queryResult.rows;
 
 console.log(loginData);
 
+
 //check if the returned requested login and password is not an empty object if so then render the submitProduct.ejs else 
 //show an error message
 if(loginData.length > 0) {
-    res.render("profil.ejs",{userLogin:loginData[0].fullname,userId:loginData[0].id});
+
+    //calling the async function GetAllProductsByUserId to retrieve all products submitted by the current user ID
+    const userProducts = await GetAllProductsByUserId(loginData[0].id);
+
+//render the profile page while passing th required values
+    res.render("profil.ejs",{userLogin:loginData[0].fullname,userId:loginData[0].id,userProducts:userProducts.rows});
     console.log("Correct!");
 }
     
@@ -137,5 +143,16 @@ async function GetSpecificUserFromDb(userId){
     } catch (error) {
         console.log("Can't process specific user selection from DB : | "+error);
     }
+}
+
+//get all the products by a specific user ID using an async function
+async function GetAllProductsByUserId(userId){
+
+    try {
+        return await client.query("SELECT id,name,description,link,image_url FROM products WHERE user_id=$1",[userId]);
+    } catch (error) {
+        console.log("Can't query products by specific user ID");
+    }
+    
 }
 

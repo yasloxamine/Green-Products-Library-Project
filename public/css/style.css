@@ -122,7 +122,7 @@ justify-content: space-between;
     margin: 0 7%;
   }
 
-  .products-grid-item{
+  .products-grid-item,#profil-user-products-card-container{
     display: flex;
     flex-direction: column;
   }
@@ -134,8 +134,8 @@ justify-content: space-between;
  .custom-form-submission{
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
-  width: auto;
+  width: 40%;
+  row-gap: 20px;
  }
 
  .custom-form-submission>input{
@@ -185,4 +185,12 @@ height: 20px;
   cursor: pointer;
  }
 
+.profil-user-products-card{
+  background-color: orange;
+ }
+
+ #profil-user-products-card-container{
+  row-gap: 40px;
+  width: 50%;
+ }
 
