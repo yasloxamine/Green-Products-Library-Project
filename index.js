@@ -64,7 +64,7 @@ console.log(loginData);
 //check if the returned requested login and password is not an empty object if so then render the submitProduct.ejs else 
 //show an error message
 if(loginData.length > 0) {
-    res.render("submitProduct.ejs",{userLogin:loginData[0].fullname,userId:loginData[0].id});
+    res.render("profil.ejs",{userLogin:loginData[0].fullname,userId:loginData[0].id});
     console.log("Correct!");
 }
     

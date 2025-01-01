@@ -44,6 +44,12 @@ span{
 /*************************************************************/
   
 
+.row-flex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 .black-bg-flexbox{
     display: flex;
     background-color: #1A1A19;
@@ -129,13 +135,7 @@ justify-content: space-between;
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-  width: 400px;
- }
-
- .custom-form-submission-container{
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
+  width: auto;
  }
 
  .custom-form-submission>input{
