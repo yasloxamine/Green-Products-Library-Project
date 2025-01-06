@@ -6,6 +6,10 @@ import bodyParser from "body-parser";
 import pg from 'pg';
 //extract the Client class from the pg module for database configuration
 const {Client} = pg;
+//import bcrypt module
+import bcrypt from 'bcrypt';
+//password encryption rounds
+const saltRounds = 10;
 
 //instanciate a new Client object with the name client and configure the database
 const client = new Client({
@@ -61,7 +65,6 @@ const loginData = queryResult.rows;
 
 console.log(loginData);
 
-
 //check if the returned requested login and password is not an empty object if so then render the submitProduct.ejs else 
 //show an error message
 if(loginData.length > 0) {
@@ -73,11 +76,9 @@ if(loginData.length > 0) {
     res.render("profil.ejs",{userLogin:loginData[0].fullname,userId:loginData[0].id,userProducts:userProducts.rows});
     console.log("Correct!");
 }
-    
 else {
     console.log("empty");
 }
-    
 });
 
 //submit new product using submitProduct post route 
