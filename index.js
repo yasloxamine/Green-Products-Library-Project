@@ -1,5 +1,5 @@
 //import express module for server side functionality
-import express from "express";
+import express, { query } from "express";
 //import bodyparser module for ejs forms control
 import bodyParser from "body-parser";
 //import the postgres module
@@ -8,6 +8,7 @@ import pg from 'pg';
 const {Client} = pg;
 //import bcrypt module
 import bcrypt from 'bcrypt';
+
 //password encryption rounds
 const saltRounds = 10;
 
@@ -81,6 +82,36 @@ else {
 }
 });
 
+//handle the register route
+app.post("/register",async(req,res)=>{
+
+    //getting the requested fullname,login,password,password confirmation form the register form and storing the data in consts
+    const requestedFullName = req.body.fullname;
+    const requestedLogin = req.body.login;
+    const requestedPassword = req.body.password;
+    const requestedPassword2 = req.body.password2;
+
+    const queryResult = await CheckIfUserIsAlreadyInDb(requestedLogin);
+
+    if(queryResult.rows.length>0){
+     
+        console.log("User already present in the database");
+
+    }else{
+        
+        if(requestedPassword!==requestedPassword2){
+            console.log("Make sure the passwords are the same");
+        }else{
+
+         await RegisterNewUserIntoDb(requestedLogin,requestedPassword,requestedFullName)
+            console.log("User Registration Successfull!");
+           
+        }  
+
+    }
+
+});
+
 //submit new product using submitProduct post route 
 app.post("/submitProduct",async(req,res)=>{
 
@@ -114,6 +145,27 @@ async function GetAllProductsFromDatabase(){
     } catch (error) {
         console.log("Can't query product selection from database : |"+error);
     }
+}
+
+//check if a user is present in the database based on a provided login
+async function CheckIfUserIsAlreadyInDb(login){
+
+    try {
+        return await client.query("SELECT * FROM users WHERE login=$1",[login]);
+    } catch (error) {
+        console.log("Can't query user selection from db based on provided login : | "+error);
+    }
+    
+}
+
+async function RegisterNewUserIntoDb(login,password,fullname){
+
+    try {
+        await client.query("INSERT INTO users(login,password,fullname) VALUES($1,$2,$3)",[login,password,fullname]);
+    } catch (error) {
+        console.log("Can't query new user insertion into the db : | "+error);
+    }
+    
 }
 
 //check for the login and password values from the db against the requested ones and return the result
