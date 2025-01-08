@@ -8,17 +8,19 @@ import pg from "pg";
 const { Client } = pg;
 //import bcrypt module
 import bcrypt from "bcrypt";
+//import the environment variables module
+import 'dotenv/config'
 
 //password encryption rounds
 const saltRounds = 10;
 
 //instanciate a new Client object with the name client and configure the database
 const client = new Client({
-  user: "postgres",
-  password: "22942284",
-  host: "localhost",
-  port: 5432,
-  database: "greenProductLibrary",
+  user: process.env.pgUser,
+  password: process.env.pgPassword,
+  host: process.env.pgHost,
+  port: process.env.pgPort,
+  database: process.env.pgDatabase,
 });
 
 //use try and catch to connect to the pg database if it failed then log the error
