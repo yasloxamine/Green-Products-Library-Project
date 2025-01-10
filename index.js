@@ -9,12 +9,13 @@ const { Client } = pg;
 //import bcrypt module
 import bcrypt from "bcrypt";
 //import the environment variables module
-import 'dotenv/config'
+import "dotenv/config";
 
 //password encryption rounds
 const saltRounds = 10;
 
 //instanciate a new Client object with the name client and configure the database
+//while storing the values into environment variables
 const client = new Client({
   user: process.env.pgUser,
   password: process.env.pgPassword,
@@ -50,7 +51,7 @@ app.get("/", async (req, res) => {
   const products = queryResult.rows;
 
   //rendering the index.ejs route while passing the products object array
-  res.render("index.ejs", { products: products });
+  res.render("index.ejs", { products: products});
 });
 
 //handle the login route
@@ -106,6 +107,7 @@ app.post("/register", async (req, res) => {
   const requestedPassword = req.body.password;
   const requestedPassword2 = req.body.password2;
 
+  if(requestedFullName && requestedLogin && requestedPassword && requestedPassword2){
   //check if the requested login is already present in the db
   const queryResult = await CheckIfUserIsAlreadyInDb(requestedLogin);
 
@@ -132,7 +134,7 @@ app.post("/register", async (req, res) => {
             queryResult.rows[0].id
           );
 
-          //render the profile page while passing th required values
+          //render the profile page while passing the required values
           res.render("profil.ejs", {
             userLogin: requestedFullName,
             userId: queryResult.rows[0].id,
@@ -141,7 +143,10 @@ app.post("/register", async (req, res) => {
         }
       });
     }
+  }}else{
+    console.log("Please fill all register informations");
   }
+
 });
 
 //submit new product using submitProduct post route
@@ -150,6 +155,7 @@ app.post("/submitProduct", async (req, res) => {
   const link = req.body.link;
   const description = req.body.description;
   const imageUrl = req.body.imageUrl;
+
 
   //insert new product into table
   if (
@@ -215,6 +221,7 @@ async function InsertNewProductIntoDb(
   imageUrl,
   userId
 ) {
+
   try {
     return await client.query(
       "INSERT INTO products (name,description,link,image_url,user_id) VALUES ($1,$2,$3,$4,$5)",

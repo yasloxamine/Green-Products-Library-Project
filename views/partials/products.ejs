@@ -8,7 +8,8 @@
         
         <div class="products-grid-item encode-sans">
             <code>product by user id : <%= product.user_id %></code>
-            <div><img src="/images/products/test-product-img.webp" alt=""></div>
+            <div><img src="data:image/png;base64,<%= product.image_url %>" alt="">
+            </div>
             <h2><%= product.name %></h2>
             <p><%= product.description %></p>
             <p><%= product.link %></p>
