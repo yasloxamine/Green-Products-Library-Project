@@ -4,16 +4,16 @@
 <div id="products-grid-container">
 
 
-    <% products.forEach(product => { %> 
+    <% products.forEach(product => {   %> 
         
         <div class="products-grid-item encode-sans">
             <code>product by user id : <%= product.user_id %></code>
-            <div><img src="data:image/png;base64,<%= product.image_url %>" alt="">
-            </div>
             <h2><%= product.name %></h2>
             <p><%= product.description %></p>
             <p><%= product.link %></p>
-            <p><%= product.image_url %></p>
+            <% if (product.image_url) { %>
+                <img style="width: 100%;" src="data:image/jpeg;base64,<%= product.image_url %>" alt="Product Image" />
+              <% } %>
         </div>
 
      <% }); %> 

@@ -10,6 +10,12 @@ const { Client } = pg;
 import bcrypt from "bcrypt";
 //import the environment variables module
 import "dotenv/config";
+//import multer package for handling images and files upload
+import multer from 'multer';
+
+//use the memory storage method from multer which keeps the uploaded images in memory
+//as a buffer type
+const upload = multer({ storage: multer.memoryStorage() });
 
 //password encryption rounds
 const saltRounds = 10;
@@ -49,6 +55,13 @@ app.get("/", async (req, res) => {
 
   //access the rows value from the query result and storing it in a products const
   const products = queryResult.rows;
+
+  // convert binary image data to base64 for display in the frontend
+  products.forEach((product) => {
+  if (product.image_url) {
+    product.image_url = product.image_url.toString("base64");
+  }
+});
 
   //rendering the index.ejs route while passing the products object array
   res.render("index.ejs", { products: products});
@@ -107,6 +120,7 @@ app.post("/register", async (req, res) => {
   const requestedPassword = req.body.password;
   const requestedPassword2 = req.body.password2;
 
+  //check if all requested fields are not empty
   if(requestedFullName && requestedLogin && requestedPassword && requestedPassword2){
   //check if the requested login is already present in the db
   const queryResult = await CheckIfUserIsAlreadyInDb(requestedLogin);
@@ -150,11 +164,14 @@ app.post("/register", async (req, res) => {
 });
 
 //submit new product using submitProduct post route
-app.post("/submitProduct", async (req, res) => {
+app.post("/submitProduct",upload.single("imageUrl"), async (req, res) => {
   const name = req.body.name;
   const link = req.body.link;
   const description = req.body.description;
-  const imageUrl = req.body.imageUrl;
+  const userId = req.body.userId;
+
+  //get the binary data of the uploaded image
+  const imageBuffer = req.file ? req.file.buffer : null;
 
 
   //insert new product into table
@@ -163,8 +180,8 @@ app.post("/submitProduct", async (req, res) => {
       name,
       description,
       link,
-      imageUrl,
-      req.body.userId
+      imageBuffer,
+      userId
     )
   ) {
     console.log("product inserted successfully!");
@@ -218,14 +235,14 @@ async function InsertNewProductIntoDb(
   name,
   description,
   link,
-  imageUrl,
+  imageBuffer,
   userId
 ) {
 
   try {
     return await client.query(
       "INSERT INTO products (name,description,link,image_url,user_id) VALUES ($1,$2,$3,$4,$5)",
-      [name, description, link, imageUrl, userId]
+      [name, description, link, imageBuffer, userId]
     );
   } catch (error) {
     console.log("Insert Query Failed : | " + error);

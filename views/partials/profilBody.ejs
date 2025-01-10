@@ -13,7 +13,6 @@
     <p>product name : <%= product.name %></p>
     <p>product description : <%= product.description %></p>
     <p>product link : <%= product.link %></p>
-    <p>product image url : <%= product.image_url %></p>
     </div> 
     <hr class="bold-custom-hr">
  <% }); %> 
@@ -22,12 +21,12 @@
 
 <%# product submission form %>
 
-<form action="/submitProduct" method="post" class="custom-form-submission">
+<form action="/submitProduct" method="post" class="custom-form-submission" enctype="multipart/form-data">
     <input type="text" name="userId" value="<%= userId %>" hidden="true">
     <input type="text" placeholder="name" name="name">
     <input type="text" placeholder="link" name="link">
     <textarea id="" name="description" placeholder="description"></textarea>
-    <input type="file" name="imageUrl" id="">
+    <input type="file" name="imageUrl" accept="image/*" id="" required>
 
     <input type="submit" value="Submit">
 
