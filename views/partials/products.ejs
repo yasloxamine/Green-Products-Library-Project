@@ -12,7 +12,7 @@
             <p><%= product.description %></p>
             <p><%= product.link %></p>
             <% if (product.image_url) { %>
-                <img style="width: 100%;" src="data:image/jpeg;base64,<%= product.image_url %>" alt="Product Image" />
+            <img src="data:image/jpeg;base64,<%= product.image_url %>" alt="Product Image" />
               <% } %>
         </div>
 

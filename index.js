@@ -12,6 +12,13 @@ import bcrypt from "bcrypt";
 import "dotenv/config";
 //import multer package for handling images and files upload
 import multer from 'multer';
+//import the passport middleware for authentication functionalities
+import passport from 'passport';
+
+//import passport local strategy
+import LocalStrategy from 'passport-local';
+//import the session management package from express
+import session from 'express-session';
 
 //use the memory storage method from multer which keeps the uploaded images in memory
 //as a buffer type
@@ -48,6 +55,68 @@ app.use(express.static("public"));
 //parse the body of the ejs forms to handle data submittion
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//initialize the express session module for managing session
+app.use(session({
+  secret:process.env.sessionSecretKey,
+  resave:false,
+  saveUninitialized:false,
+}));
+
+//initialize passport and session handling
+app.use(passport.initialize());
+app.use(passport.session());
+
+//configure and use the passport local strategy  
+passport.use(new LocalStrategy(async function verify(username,password,done){
+
+  try {
+    
+    const queryResult = await CheckIfUserIsAlreadyInDb(username);
+    const user = queryResult.rows[0];
+    
+    //in case the user is not found in the database using the previous function
+    if(!user){
+      console.log("user not found in db !");
+    return done(null,false,{message:"Incorrect Username!"});
+    }
+    
+    //else proceed with bcrypt passwords comparing
+    bcrypt.compare(password,user.password,(error,result)=>{
+    
+    //if there is a bcrypt compare error return the error
+    if(error) return done(error);
+    
+    //if the password is incorrect return incorrect password
+    if(!result) return done(null,false,{message:"incorrect password!"});
+    
+    //if the password is correct return the user
+    return done(null,user);
+    
+    });
+
+  } catch (error) {
+    return done(error);
+  }
+
+}));
+
+//serialize the id of the authenticated user 
+passport.serializeUser((user,done)=>{
+  done(null,user.id);
+});
+
+//deserialize the user and get all his informations based on the id stored in the session
+passport.deserializeUser(async(id,done)=>{
+
+  try {
+    const queryResult = await client.query("SELECT * FROM users WHERE id=$1",[id]);
+ done(null,queryResult.rows[0]);
+  } catch (error) {
+    done(error);
+  }
+ 
+});
+
 //getting the home route
 app.get("/", async (req, res) => {
   //get all the products from the database using an async function that handles the selection query and storing the value in a const
@@ -67,49 +136,14 @@ app.get("/", async (req, res) => {
   res.render("index.ejs", { products: products});
 });
 
-//handle the login route
-app.post("/login", async (req, res) => {
-  //getting the requested login and password form the login form and storing the data in const
-  const requestedLogin = req.body.login;
-  const requestedPassword = req.body.password;
 
-  //calling the async function CheckFor.... and storing the result into a queryResult const
-  const queryResult = await CheckIfUserIsAlreadyInDb(requestedLogin);
-
-  const loginData = queryResult.rows;
-
-  console.log(loginData);
-
-  //check if the returned requested login and password is not an empty object if so then render the submitProduct.ejs else
-  //show an error message
-  if (loginData.length > 0) {
-    //use bcrypt to compare user requested password and the hashed password stored in the db
-    bcrypt.compare(
-      requestedPassword,
-      loginData[0].password,
-      async function (err, result) {
-        if (err) console.log("error comparing passwords : |" + err);
-        //if the comparison is correct and everything worked well
-        else if (result) {
-          //calling the async function GetAllProductsByUserId to retrieve all products submitted by the current user ID
-          const userProducts = await GetAllProductsByUserId(loginData[0].id);
-          //render the profile page while passing th required values
-          res.render("profil.ejs", {
-            userLogin: loginData[0].fullname,
-            userId: loginData[0].id,
-            userProducts: userProducts.rows,
-          });
-          console.log("Password Correct!");
-        }
-        //if the comparison is incorrect
-        else console.log("incorrect password");
-      }
-    );
-  }
-  //in case the request login is not found in the db then
-  else {
-    console.log("empty");
-  }
+//handle the login route while using the passport authentication middleware
+app.post("/login",passport.authenticate("local",{
+  successRedirect:"/profil",
+  failureRedirect:"/",
+  failureFlash:false,
+}), (req, res) => {
+  console.log("Session after login:", req.session);
 });
 
 //handle the register route
@@ -161,6 +195,26 @@ app.post("/register", async (req, res) => {
     console.log("Please fill all register informations");
   }
 
+});
+
+//make sure that the user is authenticated
+function ensureAuthenticated(req,res,next){
+  if(req.isAuthenticated()){
+    console.log("user is authenticated proceed on the profile route")
+    return next();
+  }
+  console.log("user not authenticated returning to home route");
+  res.redirect("/");
+}
+
+//handling the profile route and ensuring the user is authenticated usign the previous function
+app.get("/profil", ensureAuthenticated, async (req, res) => {
+  const userProducts = await GetAllProductsByUserId(req.user.id);
+  res.render("profil.ejs", {
+    userLogin: req.user.fullname,
+    userId: req.user.id,
+    userProducts: userProducts.rows,
+  });
 });
 
 //submit new product using submitProduct post route
